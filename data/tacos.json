@@ -1,0 +1,16 @@
+{
+  "tacos": [
+    {
+      "id": "cCgN",
+      "name": "steak taco",
+      "description": "A traditional taco with seasoned ground beef, lettuce, and shredded cheese in a crisp corn shell.",
+      "price": "2.99"
+    },
+    {
+      "id": "36JQ",
+      "name": "gringa taco",
+      "description": "seasoned beef taco with a little kick to it",
+      "price": "5.99"
+    }
+  ]
+}
