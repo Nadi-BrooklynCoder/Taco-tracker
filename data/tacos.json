@@ -11,6 +11,48 @@
       "name": "gringa taco",
       "description": "seasoned beef taco with a little kick to it",
       "price": "5.99"
+    },
+    {
+      "id": "zzcm",
+      "name": "Taco Al Pastor",
+      "description": "Delicious pork taco with pineapple and spices",
+      "price": "3.99"
+    },
+    {
+      "id": "qfAB",
+      "name": "Fish Taco",
+      "description": "Grilled fish with cabbage slaw and avocado cream",
+      "price": "4.50"
+    },
+    {
+      "id": "fM0R",
+      "name": "Carnitas Tacos",
+      "description": "Braised pork with onion, cilantro, and salsa verde",
+      "price": "4.75"
+    },
+    {
+      "id": "cuBn",
+      "name": "Shrimp Taco",
+      "description": "Citrus-marinated shrimp with tomatoes, onions, and cilantro",
+      "price": "6.75"
+    },
+    {
+      "id": "5r0r",
+      "name": "Veggie Taco",
+      "description": "Grilled vegetables and melted cheese in a crispy tortilla",
+      "price": "5.00"
+    },
+    {
+      "id": "aW_e",
+      "name": "Chicken Taco",
+      "description": "Corn tortilla filled with pulled chicken and topped with green chili sauce",
+      "price": "6.50"
+    },
+    {
+      "id": "NUu2",
+      "name": "Beef Taco",
+      "description": "Slow-cooked beef with beans, rice, and cheese",
+      "price": "8.99"
     }
   ]
 }

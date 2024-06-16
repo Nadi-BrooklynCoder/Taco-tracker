@@ -1,8 +1,10 @@
 //tacos.js
-
+const fs = require('fs');
+const cartData = './data/cart.json'
 const { generateId, readJSONFile, writeJSONFile }= require('./helpers')
-const { nanoid } = require('nanoid');
 let cart = [];
+
+fs.existsSync(cartData) ? null : fs.writeFileSync(cartData, JSON.stringify([]));
 
 const create = (path, fileName, tacoName, tacoType, tacoPrice) => {
     let tacos = readJSONFile(path, fileName);
@@ -53,37 +55,56 @@ const edit = (path, fileName, tacoId, newTacoName, newDescription, newPrice) => 
     }
     return tacos;
 }
-
 const addItem = (tacoId, quantity, tacos) => {
+    let cart;
+    try {
+        cart = JSON.parse(fs.readFileSync(cartData, 'utf8'));
+    } catch (error) {
+        console.error('Error reading cart data:', error);
+        return { 
+            message: 'Failed to read cart data. Please check the cart file.',
+            totals: { totalPrice: 0, totalItems: 0 } 
+        };
+    }
+    
     const taco = tacos.find(t => t.id === tacoId);
-    
-    return taco ? (() => {
-        const cartItem = cart.find(item => item.id === tacoId);
-        const parsedQuantity = parseInt(quantity, 10);
-        const parsedPrice = parseFloat(taco.price);
+    if(!taco) {
+        return { 
+            message: 'Taco not found',
+            totals: { totalPrice: 0, totalItems: 0 }
+        };
+    }
 
-        cartItem ? cartItem.quantity += parsedQuantity : cart.push({ ...taco, price: parsedPrice, quantity: parsedQuantity });
-        return cart;
-    })() : { message: 'Taco not found'};
-    
-}
+    const parsedQuantity = parseInt(quantity, 10);
+    const cartIndex = cart.findIndex(item => item.id === tacoId);
 
-const getCartTotal = () => {
-    return cart.reduce((total, item) => {
-        const itemPrice = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
+    if(cartIndex !== -1) {
+        cart[cartIndex].quantity += parsedQuantity;
+        cart[cartIndex].price = (parseFloat(taco.price) * cart[cartIndex].quantity).toFixed(2);
+    } else {
+        cart.push({ ...taco, quantity: parsedQuantity, price: (parseFloat(taco.price) * parsedQuantity).toFixed(2) });
+    }
+
+    fs.writeFileSync(cartData, JSON.stringify(cart));
+    
+    const totals = cart.reduce((total, item) => {
         return {
-            totalPrice: total.totalPrice + (itemPrice * item.quantity),
+            totalPrice: total.totalPrice + parseFloat(item.price),
             totalItems: total.totalItems + item.quantity
         };
     }, { totalPrice: 0, totalItems: 0 });
+
+    return { cart, totals };
 };
 
 
+
+
 const cancelCart = () => {
-    cart = [];
-    return { message: 'Cart has been emptied' };
+    fs.writeFileSync(cartData, JSON.stringify([]));
+    return { message: 'Cart has been emptied'};
 }
 
 
-module.exports = { create, index, show, destroy, edit, addItem, getCartTotal, cancelCart }
+module.exports = { create, index, show, destroy, edit, addItem, cancelCart }
 

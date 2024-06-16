@@ -2,7 +2,7 @@
 
 const inform = console.log;
 const { writeJSONFile, readJSONFile } = require('./src/helpers');
-const { create, index, show, destroy, edit, addItem, getCartTotal, cancelCart } = require('./src/tacos');
+const { create, index, show, destroy, edit, addItem, cancelCart } = require('./src/tacos');
 const path = './data';
 const fileName = 'tacos.json'
 
@@ -45,17 +45,17 @@ const run = () => {
             updatedTacos = destroy(path, fileName, tacoId);
             writeToFile = oldList.length !== updatedTacos.length;
             break;
-        case "addItem":
-            tacoId = process.argv[3];
-            const quantity = parseInt(process.argv[4], 10);
-            const tacos = readJSONFile(path, fileName);
-            updatedTacos = addItem(tacoId, quantity, tacos);
-            inform(updatedTacos);
-            break;
-        case "getCartTotal": 
-            const total = getCartTotal();
-            inform(`Total Price: ${total.totalPrice.toFixed(2)}, Total Items: ${total.totalItems}`);
-            break;
+            case "addItem":
+                tacoId = process.argv[3];
+                const quantity = parseInt(process.argv[4], 10);
+                const tacos = readJSONFile(path, fileName);
+                const result = addItem(tacoId, quantity, tacos);
+                if(result.cart) {
+                    inform(`Item added to cart Total Price: ${result.totals.totalPrice.toFixed(2)}, Total Items: ${result.totals.totalItems}`);
+                } else {
+                    inform(result.message);
+                }
+                break;
         case "cancelCart":
             inform(cancelCart());
             break;
